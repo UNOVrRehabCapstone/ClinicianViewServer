@@ -34,3 +34,12 @@ Changed Mongo Connection String to your own in database.ts
 - `auth`: JWT authentication
 - `index`: Main file, where server starts
 - `utils`: utility functions
+
+
+
+# Release Notes:
+
+### 10/19/2023
+
+* Changed server ip to the student server ip
+* Changed MongoDb connection to new MongoDb database
