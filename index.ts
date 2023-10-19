@@ -2,8 +2,8 @@ import express, { json } from "express";
 import cors from "cors";
 import http from "http";
 import { Server, Socket } from "socket.io";
+import { MongoClient, ServerApiVersion } from "mongodb"
 import "./database/database";
-
 import { generateUniqueId } from "./utils";
 import ClinicianModel, {
   IClinician,
@@ -33,9 +33,14 @@ import { logout, validateToken } from "./auth";
 import mongoose from "mongoose";
 import IPatientSocket from "./interfaces/IPatientSocket.interface";
 
+// Start environment setup
+import dotenv from 'dotenv';
+dotenv.config();
+// End environment setup
+
 const app = express();
 const httpServer = http.createServer(app);
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 const unitySockets: any = {};
 
 interface IUnitySocket {
@@ -59,11 +64,30 @@ const io: any = new Server(httpServer, {
     origin: [
       "https://52.11.199.188/socket.io/?EIO=4&transport=polling&t=OMKLIpd",
       "ws://52.11.199.188/socket.io/?EIO=4&transport=websocket",
-      "http://localhost:1212",
+      "http://localhost:5000/",
+      "http://137.48.186.67:5000/"
     ],
     methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
   },
 });
+
+mongoose.set('strictQuery', true)
+httpServer.listen(PORT, () => {
+  console.log(`Server is running on ${PORT}`)
+  connect1();
+})
+
+async function connect1() {
+  const uri = process.env.DBURI;
+  if (uri) {
+    mongoose.connect(uri);
+  }
+  else {
+    console.log("Problem connecting to database. Environment variable not found.")
+  }
+
+}
+
 
 const addUnitySocket = (
   name: string,
@@ -139,6 +163,7 @@ app.post("/loginWithToken", (req, res) => {
 });
 
 app.post("/logout", async (req, res) => {
+  console.log("logging out")
   const token = req.headers.authorization as string;
   const user = req.body.currentUser;
   const clinician = await getClinicianWithName(user.userName);
@@ -151,6 +176,7 @@ app.post("/logout", async (req, res) => {
     res.sendStatus(200);
   });
 });
+
 
 io.on("connection", (socket: any) => {
   console.log("A Client Has Connected");
@@ -279,6 +305,7 @@ io.on("connection", (socket: any) => {
   });
 
   app.post("/join", validate, (req, res) => {
+    console.log("attempting session join")
     const params = req.body;
     socket.join(params.sessionKey);
     res.send({ success: true });
@@ -362,12 +389,4 @@ io.on("connection", (socket: any) => {
   });
 });
 
-mongoose.connect(
-  "mongodb+srv://student:372@cluster0.mhv6x.mongodb.net/clinician-view?retryWrites=true&w=majority",
-  () => {
-    console.log("Database running");
-    httpServer.listen(PORT, () => {
-      console.log(`Server is running on ${PORT}`);
-    });
-  }
-);
+

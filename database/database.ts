@@ -28,24 +28,31 @@ export const deleteAllGames = async (clinician: string = "ALL") => {
   }
 };
 
+
 export const checkClinicianWithPassword = async (
   username: string,
   shaPassword: string
 ) => {
-  const res = await ClinicianModel.findOne({
-    userName: username,
-    shaPassword: shaPassword,
-  });
-  if (res) {
-    const token = generateToken(res._id);
-    if (await updateToken(res._id, token)) {
-      return token;
+  try {
+    const res = await ClinicianModel.findOne({
+      userName: username,
+      shaPassword: shaPassword,
+    })
+    if (res) {
+      const token = generateToken(res._id);
+      if (await updateToken(res._id, token)) {
+        return token;
+      } else {
+        return undefined;
+      }
     } else {
       return undefined;
     }
-  } else {
-    return undefined;
   }
+  catch (error) {
+    console.log("ERROR: ", error)
+  }
+
 };
 
 const updateToken = async (id: mongoose.Types.ObjectId, token: string) => {

@@ -45,21 +45,26 @@ const deleteAllGames = (clinician = "ALL") => __awaiter(void 0, void 0, void 0, 
 });
 exports.deleteAllGames = deleteAllGames;
 const checkClinicianWithPassword = (username, shaPassword) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield clinician_schema_1.default.findOne({
-        userName: username,
-        shaPassword: shaPassword,
-    });
-    if (res) {
-        const token = (0, auth_1.generateToken)(res._id);
-        if (yield updateToken(res._id, token)) {
-            return token;
+    try {
+        const res = yield clinician_schema_1.default.findOne({
+            userName: username,
+            shaPassword: shaPassword,
+        });
+        if (res) {
+            const token = (0, auth_1.generateToken)(res._id);
+            if (yield updateToken(res._id, token)) {
+                return token;
+            }
+            else {
+                return undefined;
+            }
         }
         else {
             return undefined;
         }
     }
-    else {
-        return undefined;
+    catch (error) {
+        console.log("ERROR: ", error);
     }
 });
 exports.checkClinicianWithPassword = checkClinicianWithPassword;

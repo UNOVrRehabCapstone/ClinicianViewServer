@@ -21,9 +21,13 @@ require("./database/database");
 const database_1 = require("./database/database");
 const auth_1 = require("./auth");
 const mongoose_1 = __importDefault(require("mongoose"));
+// Start environment setup
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+// End environment setup
 const app = (0, express_1.default)();
 const httpServer = http_1.default.createServer(app);
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 const unitySockets = {};
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -34,11 +38,28 @@ const io = new socket_io_1.Server(httpServer, {
         origin: [
             "https://52.11.199.188/socket.io/?EIO=4&transport=polling&t=OMKLIpd",
             "ws://52.11.199.188/socket.io/?EIO=4&transport=websocket",
-            "http://localhost:1212",
+            "http://localhost:5000/",
+            "http://137.48.186.67:5000/"
         ],
         methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
     },
 });
+mongoose_1.default.set('strictQuery', true);
+httpServer.listen(PORT, () => {
+    console.log(`Server is running on ${PORT}`);
+    connect1();
+});
+function connect1() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const uri = process.env.DBURI;
+        if (uri) {
+            mongoose_1.default.connect(uri);
+        }
+        else {
+            console.log("Problem connecting to database. Environment variable not found.");
+        }
+    });
+}
 const addUnitySocket = (name, socket, clinicianSocketId) => {
     unitySockets[socket.id] = {
         name,
@@ -100,6 +121,7 @@ app.post("/loginWithToken", (req, res) => {
     });
 });
 app.post("/logout", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("logging out");
     const token = req.headers.authorization;
     const user = req.body.currentUser;
     const clinician = yield (0, database_1.getClinicianWithName)(user.userName);
@@ -219,6 +241,7 @@ io.on("connection", (socket) => {
         res.sendStatus(200);
     });
     app.post("/join", exports.validate, (req, res) => {
+        console.log("attempting session join");
         const params = req.body;
         socket.join(params.sessionKey);
         res.send({ success: true });
@@ -295,12 +318,6 @@ io.on("connection", (socket) => {
         socket.to(params.sessionKey).emit("userLeft");
         socket.emit("userLeft");
         res.send({ success: true });
-    });
-});
-mongoose_1.default.connect("mongodb+srv://student:372@cluster0.mhv6x.mongodb.net/clinician-view?retryWrites=true&w=majority", () => {
-    console.log("Database running");
-    httpServer.listen(PORT, () => {
-        console.log(`Server is running on ${PORT}`);
     });
 });
 //# sourceMappingURL=index.js.map
