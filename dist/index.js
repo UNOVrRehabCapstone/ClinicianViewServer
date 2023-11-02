@@ -37,9 +37,10 @@ const io = new socket_io_1.Server(httpServer, {
     cors: {
         origin: [
             "https://52.11.199.188/socket.io/?EIO=4&transport=polling&t=OMKLIpd",
+            "https://137.48.186.67/socket.io/?EIO=4&transport=polling&t=OMKLIpd",
             "ws://52.11.199.188/socket.io/?EIO=4&transport=websocket",
+            "ws://137.48.186.67/socket.io/?EIO=4&transport=websocket",
             "http://localhost:5000/",
-            "http://137.48.186.67:5000/"
         ],
         methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
     },
@@ -195,10 +196,20 @@ io.on("connection", (socket) => {
     });
     app.post("/startGame", exports.validate, (req, res) => {
         const params = req.body;
+        console.log(params);
         for (const id in unitySockets) {
             if (params.sessionKey == unitySockets[id].sessionKey) {
                 socket.to(id).emit("startGame", { game: params.game });
                 (0, database_1.createGame)(params.sessionKey, params.userName, params.game, id);
+            }
+        }
+        res.sendStatus(200);
+    });
+    app.post("/updateBalloonSettings", exports.validate, (req, res) => {
+        const params = req.body;
+        for (const id in unitySockets) {
+            if (params.sessionKey == unitySockets[id].sessionKey) {
+                socket.to(id).emit("balloonSettings", { mode: params.mode, target: params.target, freq: params.freq });
             }
         }
         res.sendStatus(200);

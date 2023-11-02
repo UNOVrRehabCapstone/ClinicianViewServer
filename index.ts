@@ -63,9 +63,10 @@ const io: any = new Server(httpServer, {
   cors: {
     origin: [
       "https://52.11.199.188/socket.io/?EIO=4&transport=polling&t=OMKLIpd",
+      "https://137.48.186.67/socket.io/?EIO=4&transport=polling&t=OMKLIpd",
       "ws://52.11.199.188/socket.io/?EIO=4&transport=websocket",
+      "ws://137.48.186.67/socket.io/?EIO=4&transport=websocket",
       "http://localhost:5000/",
-      "http://137.48.186.67:5000/"
     ],
     methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
   },
@@ -254,8 +255,10 @@ io.on("connection", (socket: any) => {
     socket.to(payload.socketId).emit("handScale", scale);
   });
 
+
   app.post("/startGame", validate, (req, res) => {
     const params = req.body;
+    console.log(params)
     for (const id in unitySockets) {
       if (params.sessionKey == unitySockets[id].sessionKey) {
         socket.to(id).emit("startGame", { game: params.game });
@@ -264,6 +267,16 @@ io.on("connection", (socket: any) => {
     }
     res.sendStatus(200);
   });
+
+  app.post("/updateBalloonSettings", validate, (req, res) => {
+    const params = req.body;
+    for (const id in unitySockets) {
+      if (params.sessionKey == unitySockets[id].sessionKey) {
+        socket.to(id).emit("balloonSettings", { mode: params.mode, target: params.target, freq: params.freq });
+      }
+    }
+    res.sendStatus(200);
+  })
 
   app.patch("/updatePatientInfo", (req, res) => {
     const params = req.body.values;
