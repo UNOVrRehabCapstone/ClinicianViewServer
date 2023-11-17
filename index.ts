@@ -258,7 +258,6 @@ io.on("connection", (socket: any) => {
 
   app.post("/startGame", validate, (req, res) => {
     const params = req.body;
-    console.log(params)
     for (const id in unitySockets) {
       if (params.sessionKey == unitySockets[id].sessionKey) {
         socket.to(id).emit("startGame", { game: params.game });
@@ -272,10 +271,20 @@ io.on("connection", (socket: any) => {
     const params = req.body;
     for (const id in unitySockets) {
       if (params.sessionKey == unitySockets[id].sessionKey) {
-        socket.to(id).emit("balloonSettings", { mode: params.mode, target: params.target, freq: params.freq });
+        socket.to(id).emit("balloonSettings", { mode: params.mode, target: params.target, freq: params.freq, pattern: params.pattern, ratio: params.ratio, lives: params.lives, hand: params.hand });
       }
     }
     res.sendStatus(200);
+  })
+
+  app.post("/manuallySpawnBalloon",validate,(req,res) =>{
+    const params = req.body;
+    for (const id in unitySockets){
+      if(params.sessionKey == unitySockets[id].sessionKey){
+        socket.to(id).emit("balloonSpawn");
+      }
+    }
+
   })
 
   app.patch("/updatePatientInfo", (req, res) => {
