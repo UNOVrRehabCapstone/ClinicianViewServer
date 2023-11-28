@@ -157,6 +157,10 @@ io.on("connection", (socket) => {
             addUnitySocket(name, socket);
         }
     });
+    socket.on("balloonDataServerUpdate", () => {
+        console.log("recieved balloon data server update");
+        //socket.emit("balloonDataClientUpdate")
+    });
     socket.on("positionalDataServer", (payload) => {
         const data = payload.split(":");
         console.log(`Positional Data:\n${data}`);
@@ -221,6 +225,25 @@ io.on("connection", (socket) => {
             }
         }
     });
+    app.post("/loadPatientBalloonData", exports.validate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const params = req.body;
+        let progress;
+        console.log(params.userName);
+        if (params.userName) {
+            progress = yield (0, database_1.retrievePatientBalloonProgress)(params.userName);
+        }
+        if (progress) {
+            for (const id in unitySockets) {
+                socket.to(id).emit("balloonData", { achievementProgress: progress.achievementProgress, careerProgress: progress.careerProgress, levelOneScore: progress.levelOneScore,
+                    levelTwoScore: progress.levelTwoScore,
+                    levelThreeScore: progress.levelThreeScore,
+                    levelFourScore: progress.levelFourScore,
+                    levelFiveScore: progress.levelFiveScore });
+            }
+        }
+        console.log(progress);
+        res.send(progress);
+    }));
     app.patch("/updatePatientInfo", (req, res) => {
         const params = req.body.values;
         const token = req.headers.authorization;

@@ -228,6 +228,53 @@ export const getPatientOrCreate = async (
   return patient;
 };
 
+//    retrievePatientBalloonProgress finds a patient via their username in the database, then returns that patient's balloon game progress
+//    or returns null if the patient isn't found
+export const retrievePatientBalloonProgress = async (
+  userName: string
+) =>{
+  let patient = await PatientModel.findOne({userName: userName});
+  if(patient){
+    return patient.balloonProgress;
+  }
+  else return null;
+  
+}
+
+export const updatePatientBalloonProgress = async(
+  userName: string,
+  achievementProgress: string,
+  careerProgress:string,
+  levelOneScore: string,
+  levelTwoScore: string,
+  levelThreeScore: string,
+  levelFourScore:string,
+  levelFiveScore:string,
+) =>{
+  //Check that everything is valid (achieveProgress length must equal 10, careerProgress must be between 0-5, level Scores must be between 0-3)
+  //I know it's ugly.
+  if(achievementProgress.length != 10){return null}
+  if(parseInt(careerProgress) > 5 || parseInt(careerProgress) < 0){ return null}
+  if(parseInt(levelOneScore)  > 3 || parseInt(levelOneScore)  < 0) {return null}
+  if(parseInt(levelTwoScore) > 3 || parseInt(levelTwoScore)  < 0) {return null}
+  if(parseInt(levelThreeScore)> 3 || parseInt(levelThreeScore)< 0) {return null}
+  if(parseInt(levelFourScore) > 3 || parseInt(levelFourScore) < 0) {return null}
+  if(parseInt(levelFiveScore) > 3 || parseInt(levelFiveScore) < 0) {return null}
+  let doc = await PatientModel.findOneAndUpdate({userName: userName},{
+     balloonProgress : {
+        careerProgress : careerProgress,
+        achievementProgress : achievementProgress,
+        levelOneScore : levelOneScore,
+        levelTwoScore : levelTwoScore,
+        levelThreeScore : levelThreeScore,
+        levelFourScore : levelFourScore,
+        levelFiveScore : levelFiveScore},
+     },
+     {new: true});
+
+     console.log(doc)
+}
+
 export const addPatientToClinician = async (
   patient: IPatient,
   clinicianName: string

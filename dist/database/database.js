@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createGame = exports.getClinicianWithName = exports.setClinicianOnlineStatusWithName = exports.setClinicianOnlineStatusWithId = exports.addPatientToClinician = exports.getPatientOrCreate = exports.updatePatientUserName = exports.updatePatientLastName = exports.updatePatientFirstName = exports.removePatientFromSession = exports.deleteSession = exports.addSessionToPatient = exports.addPatientToSession = exports.insertSession = exports.getAllSessions = exports.getUserByTokenInDatabase = exports.clearToken = exports.checkClinicianWithPassword = exports.deleteAllGames = void 0;
+exports.createGame = exports.getClinicianWithName = exports.setClinicianOnlineStatusWithName = exports.setClinicianOnlineStatusWithId = exports.addPatientToClinician = exports.updatePatientBalloonProgress = exports.retrievePatientBalloonProgress = exports.getPatientOrCreate = exports.updatePatientUserName = exports.updatePatientLastName = exports.updatePatientFirstName = exports.removePatientFromSession = exports.deleteSession = exports.addSessionToPatient = exports.addPatientToSession = exports.insertSession = exports.getAllSessions = exports.getUserByTokenInDatabase = exports.clearToken = exports.checkClinicianWithPassword = exports.deleteAllGames = void 0;
 const auth_1 = require("../auth");
 const clinician_schema_1 = __importDefault(require("./clinician/clinician.schema"));
 const patient_schema_1 = __importDefault(require("./patient/patient.schema"));
@@ -195,6 +195,55 @@ const getPatientOrCreate = (patientName, clinicianName, patientId) => __awaiter(
     return patient;
 });
 exports.getPatientOrCreate = getPatientOrCreate;
+//    retrievePatientBalloonProgress finds a patient via their username in the database, then returns that patient's balloon game progress
+//    or returns null if the patient isn't found
+const retrievePatientBalloonProgress = (userName) => __awaiter(void 0, void 0, void 0, function* () {
+    let patient = yield patient_schema_1.default.findOne({ userName: userName });
+    if (patient) {
+        return patient.balloonProgress;
+    }
+    else
+        return null;
+});
+exports.retrievePatientBalloonProgress = retrievePatientBalloonProgress;
+const updatePatientBalloonProgress = (userName, achievementProgress, careerProgress, levelOneScore, levelTwoScore, levelThreeScore, levelFourScore, levelFiveScore) => __awaiter(void 0, void 0, void 0, function* () {
+    //Check that everything is valid (achieveProgress length must equal 10, careerProgress must be between 0-5, level Scores must be between 0-3)
+    //I know it's ugly.
+    if (achievementProgress.length != 10) {
+        return null;
+    }
+    if (parseInt(careerProgress) > 5 || parseInt(careerProgress) < 0) {
+        return null;
+    }
+    if (parseInt(levelOneScore) > 3 || parseInt(levelOneScore) < 0) {
+        return null;
+    }
+    if (parseInt(levelTwoScore) > 3 || parseInt(levelTwoScore) < 0) {
+        return null;
+    }
+    if (parseInt(levelThreeScore) > 3 || parseInt(levelThreeScore) < 0) {
+        return null;
+    }
+    if (parseInt(levelFourScore) > 3 || parseInt(levelFourScore) < 0) {
+        return null;
+    }
+    if (parseInt(levelFiveScore) > 3 || parseInt(levelFiveScore) < 0) {
+        return null;
+    }
+    let doc = yield patient_schema_1.default.findOneAndUpdate({ userName: userName }, {
+        balloonProgress: {
+            careerProgress: careerProgress,
+            achievementProgress: achievementProgress,
+            levelOneScore: levelOneScore,
+            levelTwoScore: levelTwoScore,
+            levelThreeScore: levelThreeScore,
+            levelFourScore: levelFourScore,
+            levelFiveScore: levelFiveScore
+        },
+    }, { new: true });
+    console.log(doc);
+});
+exports.updatePatientBalloonProgress = updatePatientBalloonProgress;
 const addPatientToClinician = (patient, clinicianName) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const res = yield clinician_schema_1.default.findOneAndUpdate({ userName: clinicianName }, { $addToSet: { patients: patient._id } });
