@@ -206,15 +206,39 @@ const retrievePatientBalloonProgress = (userName) => __awaiter(void 0, void 0, v
         return null;
 });
 exports.retrievePatientBalloonProgress = retrievePatientBalloonProgress;
-const updatePatientBalloonProgress = (userName, achievementProgress) => __awaiter(void 0, void 0, void 0, function* () {
+const updatePatientBalloonProgress = (userName, achievementProgress, careerProgress, levelOneScore, levelTwoScore, levelThreeScore, levelFourScore, levelFiveScore) => __awaiter(void 0, void 0, void 0, function* () {
     //Check that everything is valid (achieveProgress length must equal 10, careerProgress must be between 0-5, level Scores must be between 0-3)
     //I know it's ugly.
     if (achievementProgress.length != 10) {
         return null;
     }
+    if (parseInt(careerProgress) > 5 || parseInt(careerProgress) < 0) {
+        return null;
+    }
+    if (parseInt(levelOneScore) > 3 || parseInt(levelOneScore) < 0) {
+        return null;
+    }
+    if (parseInt(levelTwoScore) > 3 || parseInt(levelTwoScore) < 0) {
+        return null;
+    }
+    if (parseInt(levelThreeScore) > 3 || parseInt(levelThreeScore) < 0) {
+        return null;
+    }
+    if (parseInt(levelFourScore) > 3 || parseInt(levelFourScore) < 0) {
+        return null;
+    }
+    if (parseInt(levelFiveScore) > 3 || parseInt(levelFiveScore) < 0) {
+        return null;
+    }
     let doc = yield patient_schema_1.default.findOneAndUpdate({ userName: userName }, {
         balloonProgress: {
-            achievementProgress: achievementProgress
+            careerProgress: careerProgress,
+            achievementProgress: achievementProgress,
+            levelOneScore: levelOneScore,
+            levelTwoScore: levelTwoScore,
+            levelThreeScore: levelThreeScore,
+            levelFourScore: levelFourScore,
+            levelFiveScore: levelFiveScore
         },
     }, { new: true });
     console.log(doc);

@@ -40,7 +40,31 @@ exports.PatientSchema = new mongoose_1.Schema({
         achievementProgress: {
             type: String,
             default: "0000000000",
-        }
+        },
+        careerProgress: {
+            type: String,
+            default: "0",
+        },
+        levelOneScore: {
+            type: String,
+            default: "0",
+        },
+        levelTwoScore: {
+            type: String,
+            default: "0",
+        },
+        levelThreeScore: {
+            type: String,
+            default: "0",
+        },
+        levelFourScore: {
+            type: String,
+            default: "0",
+        },
+        levelFiveScore: {
+            type: String,
+            default: "0",
+        },
     },
 });
 const PatientModel = (0, mongoose_1.model)("Patient", exports.PatientSchema, "Patient-Collection");
