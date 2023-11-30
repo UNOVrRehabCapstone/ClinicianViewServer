@@ -295,6 +295,7 @@ io.on("connection", (socket: any) => {
       }
     }
   })
+
   app.post("/loadPatientBalloonData", validate, async (req,res) =>{
     const params = req.body;
     let progress;
@@ -304,7 +305,7 @@ io.on("connection", (socket: any) => {
     }
     if(progress){
       for( const id in unitySockets){
-        socket.to(id).emit("balloonData",{achievementProgress : progress.achievementProgress, careerProgress : progress.careerProgress, levelOneScore : progress.levelOneScore,
+        socket.to(id).emit("balloonData",{userName: params.userName, achievementProgress : progress.achievementProgress, careerProgress : progress.careerProgress, levelOneScore : progress.levelOneScore,
           levelTwoScore : progress.levelTwoScore,
           levelThreeScore : progress.levelThreeScore,
           levelFourScore : progress.levelFourScore,

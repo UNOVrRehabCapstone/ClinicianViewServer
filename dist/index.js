@@ -234,7 +234,7 @@ io.on("connection", (socket) => {
         }
         if (progress) {
             for (const id in unitySockets) {
-                socket.to(id).emit("balloonData", { achievementProgress: progress.achievementProgress, careerProgress: progress.careerProgress, levelOneScore: progress.levelOneScore,
+                socket.to(id).emit("balloonData", { userName: params.userName, achievementProgress: progress.achievementProgress, careerProgress: progress.careerProgress, levelOneScore: progress.levelOneScore,
                     levelTwoScore: progress.levelTwoScore,
                     levelThreeScore: progress.levelThreeScore,
                     levelFourScore: progress.levelFourScore,
