@@ -18,12 +18,6 @@ export interface IPatient {
   //    levelxScore variables store the star rating the player has achieved for each level
   balloonProgress: {
     achievementProgress: string;
-    careerProgress: string;
-    levelOneScore:  string;
-    levelTwoScore:  string;
-    levelThreeScore: string;
-    levelFourScore: string;
-    levelFiveScore: string;
   }
 }
 
@@ -67,31 +61,7 @@ export const PatientSchema = new Schema<IPatient>({
     achievementProgress: {
       type: String,
       default: "0000000000",
-    },
-    careerProgress: {
-      type: String,
-      default: "0",
-    },
-    levelOneScore: {
-      type: String,
-      default: "0",
-    },
-    levelTwoScore: {
-      type: String,
-      default: "0",
-    },
-    levelThreeScore: {
-      type: String,
-      default: "0",
-    },
-    levelFourScore: {
-      type: String,
-      default: "0",
-    },
-    levelFiveScore: {
-      type: String,
-      default: "0",
-    },
+    }
   },
 
 });
