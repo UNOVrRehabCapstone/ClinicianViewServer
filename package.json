@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "tsc && nodemon --exec ts-node index.ts"
+    "dev": "tsc && nodemon --exec ts-node index.ts",
+    "pm2": "pm2 start dist/index.js --watch"
   },
   "repository": {
     "type": "git",
