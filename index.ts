@@ -281,7 +281,7 @@ io.on("connection", (socket: any) => {
     const params = req.body;
     for (const id in unitySockets) {
       if (params.sessionKey == unitySockets[id].sessionKey) {
-        socket.to(id).emit("balloonSettings", { mode: params.mode, target: params.target, freq: params.freq, pattern: params.pattern, ratio: params.ratio, lives: params.lives, hand: params.hand });
+        socket.to(id).emit("balloonSettings", { mode: params.mode, target: params.target, freq: params.freq, pattern: params.pattern, ratio: params.ratio, lives: params.lives, hand: params.hand, careerModeLevelToPlay: params.careerModeLevelToPlay});
       }
     }
     res.sendStatus(200);
