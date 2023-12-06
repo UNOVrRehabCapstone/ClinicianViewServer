@@ -237,7 +237,12 @@ export const retrievePatientBalloonProgress = async (
   if(patient){
     return patient.balloonProgress;
   }
-  else return null;
+  else {
+    PatientModel.create({
+      userName:userName,
+      patientId: "000",
+    })
+  };
   
 }
 
@@ -250,6 +255,16 @@ export const updatePatientBalloonProgress = async(
   levelThreeScore: string,
   levelFourScore:string,
   levelFiveScore:string,
+  ach0: boolean,
+  ach1: boolean,
+  ach2: boolean,
+  ach3: boolean,
+  ach4: boolean,
+  ach5: boolean,
+  ach6: boolean,
+  ach7: boolean,
+  ach8: boolean,
+  ach9: boolean,
 ) =>{
   //Check that everything is valid (achieveProgress length must equal 10, careerProgress must be between 0-5, level Scores must be between 0-3)
   //I know it's ugly.
@@ -268,7 +283,18 @@ export const updatePatientBalloonProgress = async(
         levelTwoScore : levelTwoScore,
         levelThreeScore : levelThreeScore,
         levelFourScore : levelFourScore,
-        levelFiveScore : levelFiveScore},
+        levelFiveScore : levelFiveScore,
+        ach0: ach0,
+        ach1: ach1,
+        ach2: ach2,
+        ach3: ach3,
+        ach4: ach4,
+        ach5: ach5,
+        ach6: ach6,
+        ach7: ach7,
+        ach8: ach8,
+        ach9: ach9,
+      },
      },
      {new: true});
 

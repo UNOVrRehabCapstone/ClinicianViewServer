@@ -202,11 +202,16 @@ const retrievePatientBalloonProgress = (userName) => __awaiter(void 0, void 0, v
     if (patient) {
         return patient.balloonProgress;
     }
-    else
-        return null;
+    else {
+        patient_schema_1.default.create({
+            userName: userName,
+            patientId: "000",
+        });
+    }
+    ;
 });
 exports.retrievePatientBalloonProgress = retrievePatientBalloonProgress;
-const updatePatientBalloonProgress = (userName, achievementProgress, careerProgress, levelOneScore, levelTwoScore, levelThreeScore, levelFourScore, levelFiveScore) => __awaiter(void 0, void 0, void 0, function* () {
+const updatePatientBalloonProgress = (userName, achievementProgress, careerProgress, levelOneScore, levelTwoScore, levelThreeScore, levelFourScore, levelFiveScore, ach0, ach1, ach2, ach3, ach4, ach5, ach6, ach7, ach8, ach9) => __awaiter(void 0, void 0, void 0, function* () {
     //Check that everything is valid (achieveProgress length must equal 10, careerProgress must be between 0-5, level Scores must be between 0-3)
     //I know it's ugly.
     if (achievementProgress.length != 10) {
@@ -238,7 +243,17 @@ const updatePatientBalloonProgress = (userName, achievementProgress, careerProgr
             levelTwoScore: levelTwoScore,
             levelThreeScore: levelThreeScore,
             levelFourScore: levelFourScore,
-            levelFiveScore: levelFiveScore
+            levelFiveScore: levelFiveScore,
+            ach0: ach0,
+            ach1: ach1,
+            ach2: ach2,
+            ach3: ach3,
+            ach4: ach4,
+            ach5: ach5,
+            ach6: ach6,
+            ach7: ach7,
+            ach8: ach8,
+            ach9: ach9,
         },
     }, { new: true });
     console.log(doc);

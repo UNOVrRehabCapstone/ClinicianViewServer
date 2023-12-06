@@ -65,6 +65,46 @@ exports.PatientSchema = new mongoose_1.Schema({
             type: String,
             default: "0",
         },
+        ach0: {
+            type: Boolean,
+            default: false
+        },
+        ach1: {
+            type: Boolean,
+            default: false
+        },
+        ach2: {
+            type: Boolean,
+            default: false
+        },
+        ach3: {
+            type: Boolean,
+            default: false
+        },
+        ach4: {
+            type: Boolean,
+            default: false
+        },
+        ach5: {
+            type: Boolean,
+            default: false
+        },
+        ach6: {
+            type: Boolean,
+            default: false
+        },
+        ach7: {
+            type: Boolean,
+            default: false
+        },
+        ach8: {
+            type: Boolean,
+            default: false
+        },
+        ach9: {
+            type: Boolean,
+            default: false
+        }
     },
 });
 const PatientModel = (0, mongoose_1.model)("Patient", exports.PatientSchema, "Patient-Collection");

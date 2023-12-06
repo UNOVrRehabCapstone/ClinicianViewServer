@@ -182,6 +182,9 @@ io.on("connection", (socket) => {
     socket.on("updatePatientPosition", (payload) => {
         socket.to(payload.socketId).emit("updatePatientPosition", payload.position);
     });
+    socket.on("test", (payload) => {
+        socket.to(payload.socketId).emit("test");
+    });
     socket.on("handMirror", (payload) => {
         socket.to(payload.socketId).emit("handMirror", payload.handMirrored);
     });
@@ -191,6 +194,27 @@ io.on("connection", (socket) => {
     socket.on("toggleSkeleton", (payload) => {
         socket.to(payload.socketId).emit("toggleSkeleton");
     });
+    socket.on("balloonSettings", (payload) => {
+        if (payload.balloonSettings) {
+            socket.to(payload.socketId).emit("balloonSettings", {
+                mode: payload.balloonSettings.mode,
+                target: payload.balloonSettings.target,
+                freq: payload.balloonSettings.freq,
+                ratio: payload.balloonSettings.ratio,
+                pattern: payload.balloonSettings.pattern,
+                lives: payload.balloonSettings.lives,
+                hand: payload.balloonSettings.hand,
+                careerModeLevelToPlay: payload.balloonSettings.level,
+                modifier: payload.balloonSettings.modifier,
+                numBalloonsSpawnedAtOnce: payload.balloonSettings.numBalloonsSpawnedAtOnce,
+                timeBetweenSpawns: payload.balloonSettings.timeBetweenSpawns
+            });
+        }
+    });
+    socket.on("balloonSpawn", (payload) => {
+        socket.to(payload.socketId).emit("balloonSpawn");
+        console.log("spawned");
+    });
     socket.on("handScale", (payload) => {
         const scale = {
             handToScale: payload.handToScale,
@@ -198,47 +222,56 @@ io.on("connection", (socket) => {
         };
         socket.to(payload.socketId).emit("handScale", scale);
     });
+    socket.on("balloonProgressionUpdate", (payload) => {
+        const data = payload.split(":");
+        (0, database_1.updatePatientBalloonProgress)(data[1], "0000000000", "0", data[3], data[5], data[7], data[9], data[11], data[13].toLowerCase() === "true", data[15].toLowerCase() === "true", data[17].toLowerCase() === "true", data[19].toLowerCase() === "true", data[21].toLowerCase() === "true", data[23].toLowerCase() === "true", data[25].toLowerCase() === "true", data[27].toLowerCase() === "true", data[29].toLowerCase() === "true", data[31].toLowerCase() === "true");
+        console.log(data);
+    });
+    socket.on("moveDartUp", (payload) => {
+        console.log("Up");
+        socket.to(payload.socketId).emit("moveDartUp");
+    });
+    socket.on("moveDartDown", (payload) => {
+        console.log("Down");
+        socket.to(payload.socketId).emit("moveDartDown");
+    });
     app.post("/startGame", exports.validate, (req, res) => {
         const params = req.body;
         for (const id in unitySockets) {
             if (params.sessionKey == unitySockets[id].sessionKey) {
-                socket.to(id).emit("startGame", { game: params.game });
+                socket.to(id).emit("startGame", { game: params.game, environment: params.environment });
                 (0, database_1.createGame)(params.sessionKey, params.userName, params.game, id);
             }
         }
         res.sendStatus(200);
     });
-    app.post("/updateBalloonSettings", exports.validate, (req, res) => {
-        const params = req.body;
-        for (const id in unitySockets) {
-            if (params.sessionKey == unitySockets[id].sessionKey) {
-                socket.to(id).emit("balloonSettings", { mode: params.mode, target: params.target, freq: params.freq, pattern: params.pattern, ratio: params.ratio, lives: params.lives, hand: params.hand, careerModeLevelToPlay: params.careerModeLevelToPlay });
-            }
-        }
-        res.sendStatus(200);
-    });
-    app.post("/manuallySpawnBalloon", exports.validate, (req, res) => {
-        const params = req.body;
-        for (const id in unitySockets) {
-            if (params.sessionKey == unitySockets[id].sessionKey) {
-                socket.to(id).emit("balloonSpawn");
-            }
-        }
-    });
     app.post("/loadPatientBalloonData", exports.validate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const params = req.body;
         let progress;
-        console.log(params.userName);
         if (params.userName) {
             progress = yield (0, database_1.retrievePatientBalloonProgress)(params.userName);
         }
         if (progress) {
             for (const id in unitySockets) {
-                socket.to(id).emit("balloonData", { userName: params.userName, achievementProgress: progress.achievementProgress, careerProgress: progress.careerProgress, levelOneScore: progress.levelOneScore,
+                socket.to(id).emit("balloonData", { userName: params.userName,
+                    achievementProgress: progress.achievementProgress,
+                    careerProgress: progress.careerProgress,
+                    levelOneScore: progress.levelOneScore,
                     levelTwoScore: progress.levelTwoScore,
                     levelThreeScore: progress.levelThreeScore,
                     levelFourScore: progress.levelFourScore,
-                    levelFiveScore: progress.levelFiveScore });
+                    levelFiveScore: progress.levelFiveScore,
+                    ach0: progress.ach0,
+                    ach1: progress.ach0,
+                    ach2: progress.ach0,
+                    ach3: progress.ach0,
+                    ach4: progress.ach0,
+                    ach5: progress.ach0,
+                    ach6: progress.ach0,
+                    ach7: progress.ach0,
+                    ach8: progress.ach0,
+                    ach9: progress.ach0,
+                });
             }
         }
         console.log(progress);
