@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "tsc && nodemon --exec ts-node index.ts",
-    "pm2": "pm2 start dist/index.js --watch"
+    "pm2": "pm2 start dist/index.js --watch",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -24,17 +25,21 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.1",
+    "jest": "^29.7.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^6.1.0",
     "mongoose": "^6.5.3",
-    "socket.io": "^4.5.1"
+    "socket.io": "^4.5.1",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.7.14",
     "nodemon": "^2.0.19",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.2"
   }

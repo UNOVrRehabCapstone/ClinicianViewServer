@@ -242,6 +242,12 @@ export const retrievePatientBalloonProgress = async (
       userName:userName,
       patientId: "000",
     })
+    patient = await PatientModel.findOne({userName: userName});
+    if(patient){
+      return patient.balloonProgress;
+    }
+    else return null;
+
   };
   
 }
