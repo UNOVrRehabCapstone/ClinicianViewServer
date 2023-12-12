@@ -207,6 +207,12 @@ const retrievePatientBalloonProgress = (userName) => __awaiter(void 0, void 0, v
             userName: userName,
             patientId: "000",
         });
+        patient = yield patient_schema_1.default.findOne({ userName: userName });
+        if (patient) {
+            return patient.balloonProgress;
+        }
+        else
+            return null;
     }
     ;
 });

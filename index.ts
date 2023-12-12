@@ -261,6 +261,7 @@ io.on("connection", (socket: any) => {
   });
 
   socket.on("balloonSettings", (payload: IPatientSocket) => {
+    console.log(payload.balloonSettings);
     if(payload.balloonSettings){
       socket.to(payload.socketId).emit("balloonSettings", 
       {
@@ -286,6 +287,10 @@ io.on("connection", (socket: any) => {
 
   });
 
+  socket.on("gameEnded",(payload: any) =>{
+    console.log(payload);
+    socket.to(payload).emit("clientGameEnded") ;
+  })
 
   socket.on("handScale", (payload: IPatientSocket) => {
     const scale = {
@@ -327,6 +332,7 @@ io.on("connection", (socket: any) => {
 
   app.post("/startGame", validate, (req, res) => {
     const params = req.body;
+    console.log(params);
     for (const id in unitySockets) {
       if (params.sessionKey == unitySockets[id].sessionKey) {
         socket.to(id).emit("startGame", { game: params.game, environment: params.environment });
