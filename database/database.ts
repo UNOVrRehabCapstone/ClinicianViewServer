@@ -238,7 +238,7 @@ export const retrievePatientBalloonProgress = async (
     return patient.balloonProgress;
   }
   else {
-    PatientModel.create({
+   await  PatientModel.create({
       userName:userName,
       patientId: "000",
     })
@@ -254,8 +254,6 @@ export const retrievePatientBalloonProgress = async (
 
 export const updatePatientBalloonProgress = async(
   userName: string,
-  achievementProgress: string,
-  careerProgress:string,
   levelOneScore: string,
   levelTwoScore: string,
   levelThreeScore: string,
@@ -274,8 +272,6 @@ export const updatePatientBalloonProgress = async(
 ) =>{
   //Check that everything is valid (achieveProgress length must equal 10, careerProgress must be between 0-5, level Scores must be between 0-3)
   //I know it's ugly.
-  if(achievementProgress.length != 10){return null}
-  if(parseInt(careerProgress) > 5 || parseInt(careerProgress) < 0){ return null}
   if(parseInt(levelOneScore)  > 3 || parseInt(levelOneScore)  < 0) {return null}
   if(parseInt(levelTwoScore) > 3 || parseInt(levelTwoScore)  < 0) {return null}
   if(parseInt(levelThreeScore)> 3 || parseInt(levelThreeScore)< 0) {return null}
@@ -283,8 +279,6 @@ export const updatePatientBalloonProgress = async(
   if(parseInt(levelFiveScore) > 3 || parseInt(levelFiveScore) < 0) {return null}
   let doc = await PatientModel.findOneAndUpdate({userName: userName},{
      balloonProgress : {
-        careerProgress : careerProgress,
-        achievementProgress : achievementProgress,
         levelOneScore : levelOneScore,
         levelTwoScore : levelTwoScore,
         levelThreeScore : levelThreeScore,
@@ -302,9 +296,9 @@ export const updatePatientBalloonProgress = async(
         ach9: ach9,
       },
      },
-     {new: true});
 
-     console.log(doc)
+     {new: true});
+     console.log(doc);
 }
 
 export const addPatientToClinician = async (

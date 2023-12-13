@@ -203,7 +203,7 @@ const retrievePatientBalloonProgress = (userName) => __awaiter(void 0, void 0, v
         return patient.balloonProgress;
     }
     else {
-        patient_schema_1.default.create({
+        yield patient_schema_1.default.create({
             userName: userName,
             patientId: "000",
         });
@@ -217,15 +217,9 @@ const retrievePatientBalloonProgress = (userName) => __awaiter(void 0, void 0, v
     ;
 });
 exports.retrievePatientBalloonProgress = retrievePatientBalloonProgress;
-const updatePatientBalloonProgress = (userName, achievementProgress, careerProgress, levelOneScore, levelTwoScore, levelThreeScore, levelFourScore, levelFiveScore, ach0, ach1, ach2, ach3, ach4, ach5, ach6, ach7, ach8, ach9) => __awaiter(void 0, void 0, void 0, function* () {
+const updatePatientBalloonProgress = (userName, levelOneScore, levelTwoScore, levelThreeScore, levelFourScore, levelFiveScore, ach0, ach1, ach2, ach3, ach4, ach5, ach6, ach7, ach8, ach9) => __awaiter(void 0, void 0, void 0, function* () {
     //Check that everything is valid (achieveProgress length must equal 10, careerProgress must be between 0-5, level Scores must be between 0-3)
     //I know it's ugly.
-    if (achievementProgress.length != 10) {
-        return null;
-    }
-    if (parseInt(careerProgress) > 5 || parseInt(careerProgress) < 0) {
-        return null;
-    }
     if (parseInt(levelOneScore) > 3 || parseInt(levelOneScore) < 0) {
         return null;
     }
@@ -243,8 +237,6 @@ const updatePatientBalloonProgress = (userName, achievementProgress, careerProgr
     }
     let doc = yield patient_schema_1.default.findOneAndUpdate({ userName: userName }, {
         balloonProgress: {
-            careerProgress: careerProgress,
-            achievementProgress: achievementProgress,
             levelOneScore: levelOneScore,
             levelTwoScore: levelTwoScore,
             levelThreeScore: levelThreeScore,

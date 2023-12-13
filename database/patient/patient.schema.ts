@@ -17,8 +17,6 @@ export interface IPatient {
   //    achievementProgress is a 10 bit binary string that represents which acheivements the player has unlocked
   //    levelxScore variables store the star rating the player has achieved for each level
   balloonProgress: {
-    achievementProgress: string;
-    careerProgress: string;
     levelOneScore:  string;
     levelTwoScore:  string;
     levelThreeScore: string;

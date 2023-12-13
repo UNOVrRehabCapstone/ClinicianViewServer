@@ -72,9 +72,7 @@ function disconnectFromDb() {
         testAch9
     };
     let returnedData = yield (0, database_1.retrievePatientBalloonProgress)(testUserName);
-    (0, globals_1.expect)(returnedData === null || returnedData === void 0 ? void 0 : returnedData.achievementProgress).toBe(testBalloonProgress.testAchievementProgress);
     (0, globals_1.expect)(returnedData === null || returnedData === void 0 ? void 0 : returnedData.ach0).toBe(testBalloonProgress.testAch0);
-    (0, globals_1.expect)(returnedData === null || returnedData === void 0 ? void 0 : returnedData.careerProgress).toBe(testBalloonProgress.testCareerProgress);
     (0, globals_1.expect)(returnedData === null || returnedData === void 0 ? void 0 : returnedData.levelOneScore).toBe(testBalloonProgress.testLevelOneScore);
 }));
 (0, globals_1.test)('updatePatientBalloonProgress', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -82,19 +80,15 @@ function disconnectFromDb() {
     let progress = yield (0, database_1.retrievePatientBalloonProgress)(testUser);
     // get user data, change it, check if it's correct, then change it back
     if (progress) {
-        (0, globals_1.expect)(progress.achievementProgress).toBe("1111111111");
-        progress.achievementProgress = "0000000000";
-        yield (0, database_1.updatePatientBalloonProgress)(testUser, progress.achievementProgress, progress.careerProgress, progress.levelOneScore, progress.levelTwoScore, progress.levelThreeScore, progress.levelFourScore, progress.levelFiveScore, progress.ach0, progress.ach1, progress.ach2, progress.ach3, progress.ach4, progress.ach5, progress.ach6, progress.ach7, progress.ach8, progress.ach9);
+        yield (0, database_1.updatePatientBalloonProgress)(testUser, progress.levelOneScore, progress.levelTwoScore, progress.levelThreeScore, progress.levelFourScore, progress.levelFiveScore, progress.ach0, progress.ach1, progress.ach2, progress.ach3, progress.ach4, progress.ach5, progress.ach6, progress.ach7, progress.ach8, progress.ach9);
         let progress2 = yield (0, database_1.retrievePatientBalloonProgress)(testUser);
         if (progress2) {
-            (0, globals_1.expect)(progress2.achievementProgress).toBe("0000000000");
-            progress2.achievementProgress = "1111111111";
-            yield (0, database_1.updatePatientBalloonProgress)(testUser, progress2.achievementProgress, progress2.careerProgress, progress2.levelOneScore, progress2.levelTwoScore, progress2.levelThreeScore, progress2.levelFourScore, progress2.levelFiveScore, progress2.ach0, progress2.ach1, progress2.ach2, progress2.ach3, progress2.ach4, progress2.ach5, progress2.ach6, progress2.ach7, progress2.ach8, progress2.ach9);
+            yield (0, database_1.updatePatientBalloonProgress)(testUser, progress2.levelOneScore, progress2.levelTwoScore, progress2.levelThreeScore, progress2.levelFourScore, progress2.levelFiveScore, progress2.ach0, progress2.ach1, progress2.ach2, progress2.ach3, progress2.ach4, progress2.ach5, progress2.ach6, progress2.ach7, progress2.ach8, progress2.ach9);
         }
         // attempt to bad info
         if (progress2) {
             progress2.levelFiveScore = "100";
-            let retVal = yield (0, database_1.updatePatientBalloonProgress)(testUser, progress2.achievementProgress, progress2.careerProgress, progress2.levelOneScore, progress2.levelTwoScore, progress2.levelThreeScore, progress2.levelFourScore, progress2.levelFiveScore, progress2.ach0, progress2.ach1, progress2.ach2, progress2.ach3, progress2.ach4, progress2.ach5, progress2.ach6, progress2.ach7, progress2.ach8, progress2.ach9);
+            let retVal = yield (0, database_1.updatePatientBalloonProgress)(testUser, progress2.levelOneScore, progress2.levelTwoScore, progress2.levelThreeScore, progress2.levelFourScore, progress2.levelFiveScore, progress2.ach0, progress2.ach1, progress2.ach2, progress2.ach3, progress2.ach4, progress2.ach5, progress2.ach6, progress2.ach7, progress2.ach8, progress2.ach9);
             (0, globals_1.expect)(retVal).toBeNull();
         }
     }

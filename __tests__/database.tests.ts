@@ -62,9 +62,7 @@ test('retrievePatientBalloonProgress', async () => {
   }
 
   let returnedData = await retrievePatientBalloonProgress(testUserName);
-  expect(returnedData?.achievementProgress).toBe(testBalloonProgress.testAchievementProgress);
   expect(returnedData?.ach0).toBe(testBalloonProgress.testAch0);
-  expect(returnedData?.careerProgress).toBe(testBalloonProgress.testCareerProgress);
   expect(returnedData?.levelOneScore).toBe(testBalloonProgress.testLevelOneScore);
 
 
@@ -76,11 +74,7 @@ test('updatePatientBalloonProgress', async () => {
   let progress = await retrievePatientBalloonProgress(testUser);
   // get user data, change it, check if it's correct, then change it back
   if(progress){
-    expect(progress.achievementProgress).toBe("1111111111");
-    progress.achievementProgress = "0000000000";
     await updatePatientBalloonProgress(testUser,
-      progress.achievementProgress,
-      progress.careerProgress,
       progress.levelOneScore,
       progress.levelTwoScore,
       progress.levelThreeScore,
@@ -99,11 +93,8 @@ test('updatePatientBalloonProgress', async () => {
     );
     let progress2 = await retrievePatientBalloonProgress(testUser);
     if(progress2){
-      expect(progress2.achievementProgress).toBe("0000000000");
-      progress2.achievementProgress = "1111111111";
       await updatePatientBalloonProgress(testUser,
-        progress2.achievementProgress,
-        progress2.careerProgress,
+
         progress2.levelOneScore,
         progress2.levelTwoScore,
         progress2.levelThreeScore,
@@ -127,8 +118,6 @@ test('updatePatientBalloonProgress', async () => {
     if(progress2){
       progress2.levelFiveScore = "100";
       let retVal = await updatePatientBalloonProgress(testUser,
-        progress2.achievementProgress,
-        progress2.careerProgress,
         progress2.levelOneScore,
         progress2.levelTwoScore,
         progress2.levelThreeScore,
