@@ -10,7 +10,7 @@ import ClinicianModel, {
 } from "./database/clinician/clinician.schema";
 import PatientModel from "./database/patient/patient.schema";
 import SessionModel, { ISession } from "./database/session/session.schema";
-import GameModel from "./database/game/game.schema";
+import GameModel, { GameSchema } from "./database/game/game.schema";
 import {
   addPatientToClinician,
   addPatientToSession,
