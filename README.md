@@ -39,12 +39,7 @@ Changed Mongo Connection String to your own in database.ts
 
 # Release Notes:
 
-### 10/19/2023
+### 2/29/24
 
-* Changed server ip to the student server ip
-* Changed MongoDb connection to new MongoDb database
-
-### 11/02/2023
-
-* Added ability for the clinician to update the patient's balloon game settings
+Updated .env and connected into student mongoDB. This is represented in a .env file that isn't committed for security reasons.
 
