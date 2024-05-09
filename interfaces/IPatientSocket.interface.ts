@@ -39,6 +39,8 @@ interface PlaneSettings{
   useAutoAim: boolean,
   releaseButton: String,
   targets: number,
+  exactAngleSpawn: boolean,
+  exactAngle: number,
 }
 
 export default IPatientSocket;

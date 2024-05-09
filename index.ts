@@ -296,6 +296,8 @@ io.on("connection", (socket: any) => {
         useAutoAim: payload.planeSettings.useAutoAim,
         releaseButton: payload.planeSettings.releaseButton,
         targets: payload.planeSettings.targets,
+        exactAngleSpawn: payload.planeSettings.exactAngleSpawn,
+        exactAngle: payload.planeSettings.exactAngle
       });
     }
   });
