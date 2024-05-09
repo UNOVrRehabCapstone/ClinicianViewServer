@@ -261,7 +261,7 @@ io.on("connection", (socket: any) => {
   });
 
   socket.on("balloonSettings", (payload: IPatientSocket) => {
-    //console.log(payload.balloonSettings);
+    console.log(payload.balloonSettings);
     if(payload.balloonSettings){
       socket.to(payload.socketId).emit("balloonSettings", 
       {
@@ -278,7 +278,26 @@ io.on("connection", (socket: any) => {
         timeBetweenSpawns: payload.balloonSettings.timeBetweenSpawns
       });
     }
+  });
 
+  socket.on("planeSettings", (payload: IPatientSocket) => {
+    console.log(payload.planeSettings);
+    if(payload.planeSettings){
+      socket.to(payload.socketId).emit("planeSettings", 
+      {
+        rightSideSpawnOnly: payload.planeSettings.rightSideSpawnOnly,
+        leftSideSpawnOnly: payload.planeSettings.leftSideSpawnOnly,
+        griplessGrabbing: payload.planeSettings.griplessGrabbing,
+        useDistanceFromHeadThrow: payload.planeSettings.useDistanceFromHeadThrow,
+        useAutoReleaseTimerThrow: payload.planeSettings.useAutoReleaseTimerThrow,
+        useButtonPressForThrow: payload.planeSettings.useButtonPressForThrow,
+        throwThreshold: payload.planeSettings.throwThreshold,
+        requiredAimTime: payload.planeSettings.requiredAimTime,
+        useAutoAim: payload.planeSettings.useAutoAim,
+        releaseButton: payload.planeSettings.releaseButton,
+        targets: payload.planeSettings.targets,
+      });
+    }
   });
 
   socket.on("balloonSpawn", (payload: IPatientSocket) => {
