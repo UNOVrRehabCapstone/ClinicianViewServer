@@ -297,7 +297,12 @@ io.on("connection", (socket: any) => {
         releaseButton: payload.planeSettings.releaseButton,
         targets: payload.planeSettings.targets,
         exactAngleSpawn: payload.planeSettings.exactAngleSpawn,
-        exactAngle: payload.planeSettings.exactAngle
+        exactAngle: payload.planeSettings.exactAngle,
+        useTargetZones: payload.planeSettings.useTargetZones,
+        numRTargets: payload.planeSettings.numRTargets,
+        numLTargets: payload.planeSettings.numLTargets,
+        numCTargets: payload.planeSettings.numCTargets,
+        numFTargets: payload.planeSettings.numFTargets,
       });
     }
   });

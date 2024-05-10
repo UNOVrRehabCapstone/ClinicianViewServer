@@ -41,6 +41,11 @@ interface PlaneSettings{
   targets: number,
   exactAngleSpawn: boolean,
   exactAngle: number,
+  useTargetZones: boolean,
+  numRTargets: number,
+  numLTargets: number,
+  numCTargets: number,
+  numFTargets: number,
 }
 
 export default IPatientSocket;
