@@ -43,3 +43,6 @@ Changed Mongo Connection String to your own in database.ts
 
 Updated .env and connected into student mongoDB. This is represented in a .env file that isn't committed for security reasons.
 
+### 5/15/24
+
+Added in connection functions for plane game clinician view and game
